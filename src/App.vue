@@ -1,28 +1,40 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <CarWashPoster />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CarWashPoster from './components/CarWashPoster.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    CarWashPoster
   }
 }
 </script>
 
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Microsoft YaHei', Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 </style>
