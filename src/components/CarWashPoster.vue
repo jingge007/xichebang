@@ -1,5 +1,5 @@
 <template>
-  <div class="car-wash-page">
+  <div class="car-wash-page" ref="carWashPage">
     <!-- 1. 顶部横幅 -->
     <div class="section header-banner">
       <div class="logo-image">
@@ -15,7 +15,7 @@
     <!-- 3. 图文注册流程 -->
     <div class="section green-bg">
       <h2 class="card-title">新会员手机注册流程</h2>
-      <div class="flow-steps">
+      <div class="flow-steps" :class="{ 'for-poster': isGeneratingPoster }">
         <div class="flow-step">
           <div class="step-number">步骤一</div>
           <div class="phone-mockup-image">
@@ -168,12 +168,63 @@
         </div>
       </div>
     </div>
+    
+    <!-- 海报生成按钮 -->
+    <div class="poster-button-container">
+      <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
+    </div>
   </div>
 </template>
 
 <script>
+import html2canvas from 'html2canvas';
+
 export default {
   name: "CarWashPage",
+  data() {
+    return {
+      isGeneratingPoster: false
+    };
+  },
+  methods: {
+    generatePoster() {
+      // 设置海报生成状态
+      this.isGeneratingPoster = true;
+      
+      // 隐藏按钮以避免出现在海报中
+      const button = document.querySelector('.poster-button-container');
+      button.style.display = 'none';
+      
+      // 等待DOM更新后再生成海报
+      this.$nextTick(() => {
+        const element = this.$refs.carWashPage;
+        
+        html2canvas(element, {
+          scale: 2, // 提高清晰度
+          useCORS: true, // 允许跨域图片
+          backgroundColor: '#f0f2f5', // 设置背景色
+          scrollX: 0,
+          scrollY: 0
+        }).then(canvas => {
+          // 创建下载链接
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = '喜车邦自助洗车海报.png';
+          link.click();
+          
+          // 恢复按钮显示和状态
+          button.style.display = 'block';
+          this.isGeneratingPoster = false;
+        }).catch(error => {
+          console.error('生成海报失败:', error);
+          alert('生成海报失败，请重试');
+          // 确保恢复按钮显示和状态
+          button.style.display = 'block';
+          this.isGeneratingPoster = false;
+        });
+      });
+    }
+  }
 };
 </script>
 
@@ -188,6 +239,9 @@ export default {
   gap: 20px;
   align-items: center;
   max-width: 100%;
+  position: relative;
+  /* 设置一个足够大的最小宽度，确保内容不会被压缩 */
+  min-width: 1200px;
 }
 
 .section, .section-row {
@@ -213,6 +267,7 @@ export default {
   padding: 5px 20px;
   border-radius: 8px;
   height: 60px;
+  min-width: 800px;
 }
 
 .header-service-info {
@@ -246,6 +301,8 @@ export default {
   font-size: 32px;
   font-weight: bold;
   letter-spacing: 4px;
+  white-space: nowrap;
+  margin: 0 15px;
 }
 
 /* 信息卡片通用样式 */
@@ -319,6 +376,23 @@ export default {
   flex-wrap: nowrap;
   max-width: 100%;
   overflow-x: auto;
+}
+
+/* 海报模式下的注册流程 */
+.flow-steps.for-poster {
+  flex-wrap: wrap;
+  overflow-x: visible;
+  justify-content: center;
+}
+
+.flow-steps.for-poster .flow-step {
+  min-width: 200px;
+  flex: 1;
+  margin: 0 10px 30px 10px;
+}
+
+.flow-steps.for-poster .arrow {
+  display: none;
 }
 
 .flow-step {
@@ -458,5 +532,33 @@ export default {
   font-size: 14px;
   margin: 0;
   line-height: 1.5;
+}
+
+/* 海报生成按钮样式 - 悬浮固定在底部 */
+.poster-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.generate-poster-btn {
+  background-color: #0052d9;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.generate-poster-btn:hover {
+  background-color: #003a99;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 </style>
