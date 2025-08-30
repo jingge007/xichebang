@@ -1,6 +1,6 @@
 <template>
   <div class="car-wash-page" ref="carWashPage">
-    <!-- 1. 顶部横幅 -->
+    <!--1.顶部横幅 -->
     <div class="section header-banner">
       <div class="logo-image">
         <img :src="require('@/assets/images/xichebang_logo.jpg')" alt="喜车帮logo">
@@ -11,8 +11,7 @@
         <div class="service-types">清水/泡沫/吸尘/洗手</div>
       </div>
     </div>
-
-    <!-- 3. 图文注册流程 -->
+    <!--2.图文注册流程 -->
     <div class="section green-bg">
       <h2 class="card-title">新会员手机注册流程</h2>
       <div class="flow-steps" :class="{ 'for-poster': isGeneratingPoster }">
@@ -65,8 +64,7 @@
         </div>
       </div>
     </div>
-
-    <!-- 4. 使用流程与收费标准 -->
+    <!--3.使用流程与收费标准 -->
     <div class="section-row">
       <div class="info-card green-bg">
         <h2 class="card-title">自助洗车使用流程</h2>
@@ -168,15 +166,14 @@
         </div>
       </div>
     </div>
-    
-    <!-- 海报生成按钮和二维码切换按钮 -->
+    <!--4.海报生成按钮和二维码切换按钮 -->
     <div class="poster-button-container">
       <div class="button-group" v-if="!isGeneratingPoster">
         <div class="qr-code-switcher">
-          <button 
-            v-for="i in 3" 
-            :key="'car-' + i" 
-            @click="switchQRCode(i)" 
+          <button
+            v-for="i in 3"
+            :key="'car-' + i"
+            @click="switchQRCode(i)"
             :class="{ active: currentQRCode === i }"
             class="qr-switch-btn"
           >
@@ -184,10 +181,10 @@
           </button>
         </div>
         <div class="wechat-qr-code-switcher">
-          <button 
-            v-for="i in 2" 
-            :key="'wechat-' + i" 
-            @click="switchWechatQRCode(i)" 
+          <button
+            v-for="i in 2"
+            :key="'wechat-' + i"
+            @click="switchWechatQRCode(i)"
             :class="{ active: currentWechatQRCode === i }"
             class="wechat-qr-switch-btn"
           >
@@ -217,24 +214,24 @@ export default {
     switchQRCode(index) {
       this.currentQRCode = index;
     },
-    
+
     // 切换微信二维码
     switchWechatQRCode(index) {
       this.currentWechatQRCode = index;
     },
-    
+
     generatePoster() {
       // 设置海报生成状态
       this.isGeneratingPoster = true;
-      
+
       // 隐藏按钮以避免出现在海报中
       const button = document.querySelector('.poster-button-container');
       button.style.display = 'none';
-      
+
       // 等待DOM更新后再生成海报
       this.$nextTick(() => {
         const element = this.$refs.carWashPage;
-        
+
         html2canvas(element, {
           scale: 2, // 提高清晰度
           useCORS: true, // 允许跨域图片
@@ -247,7 +244,7 @@ export default {
           link.href = canvas.toDataURL('image/png');
           link.download = `喜车邦自助洗车海报_洗车码${this.currentQRCode}_微信码${this.currentWechatQRCode}.png`;
           link.click();
-          
+
           // 恢复按钮显示和状态
           button.style.display = 'block';
           this.isGeneratingPoster = false;
