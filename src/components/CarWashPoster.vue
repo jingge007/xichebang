@@ -29,7 +29,7 @@
           <div class="phone-mockup-image">
             <img :src="require('@/assets/images/register_02.png')" alt="注册步骤2">
           </div>
-          <div class="step-description">进入公众号后点击会员中心</div>
+          <div class="step-description">进入公众号后点击会员注册</div>
         </div>
         <div class="arrow">→</div>
         <div class="flow-step">
@@ -37,7 +37,7 @@
           <div class="phone-mockup-image">
             <img :src="require('@/assets/images/register_03.png')" alt="注册步骤3">
           </div>
-          <div class="step-description">输入手机号注册会员号</div>
+          <div class="step-description">输入相关信息注册会员</div>
         </div>
         <div class="arrow">→</div>
         <div class="flow-step">
@@ -45,7 +45,7 @@
           <div class="phone-mockup-image">
             <img :src="require('@/assets/images/register_04.png')" alt="注册步骤4">
           </div>
-          <div class="step-description">注册成功进入我的账户</div>
+          <div class="step-description">注册成功后进入个人中心点击充值</div>
         </div>
         <div class="arrow">→</div>
         <div class="flow-step">
@@ -61,7 +61,7 @@
           <div class="phone-mockup-image">
             <img :src="require('@/assets/images/register_06.png')" alt="注册步骤6">
           </div>
-          <div class="step-description">返回首页开始洗车服务</div>
+          <div class="step-description">微信扫描洗车码开始洗车服务</div>
         </div>
       </div>
     </div>
@@ -123,11 +123,11 @@
         </ul>
         <div class="qrCode_box">
           <div class="carWashCode">
-            <img :src="require('@/assets/images/carWashCode_01.jpg')" alt="洗车码" class="qr-code-image-bottom">
+            <img :src="require(`@/assets/images/carWashCode_0${currentQRCode}.jpg`)" alt="洗车码" class="qr-code-image-bottom">
           </div>
           <!-- 二维码图片 -->
           <div class="qr-code-section-bottom">
-            <img :src="require('@/assets/images/wechatQRCode.png')" alt="扫码注册">
+            <img :src="require(`@/assets/images/wechatQRCode_0${currentWechatQRCode}.png`)" alt="扫码注册">
           </div>
         </div>
       </div>
@@ -169,9 +169,33 @@
       </div>
     </div>
     
-    <!-- 海报生成按钮 -->
+    <!-- 海报生成按钮和二维码切换按钮 -->
     <div class="poster-button-container">
-      <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
+      <div class="button-group" v-if="!isGeneratingPoster">
+        <div class="qr-code-switcher">
+          <button 
+            v-for="i in 3" 
+            :key="'car-' + i" 
+            @click="switchQRCode(i)" 
+            :class="{ active: currentQRCode === i }"
+            class="qr-switch-btn"
+          >
+            洗车二维码{{ i }}
+          </button>
+        </div>
+        <div class="wechat-qr-code-switcher">
+          <button 
+            v-for="i in 2" 
+            :key="'wechat-' + i" 
+            @click="switchWechatQRCode(i)" 
+            :class="{ active: currentWechatQRCode === i }"
+            class="wechat-qr-switch-btn"
+          >
+            微信二维码{{ i }}
+          </button>
+        </div>
+        <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
+      </div>
     </div>
   </div>
 </template>
@@ -183,10 +207,22 @@ export default {
   name: "CarWashPage",
   data() {
     return {
-      isGeneratingPoster: false
+      isGeneratingPoster: false,
+      currentQRCode: 1, // 默认显示第一张洗车二维码
+      currentWechatQRCode: 1 // 默认显示第一张微信二维码
     };
   },
   methods: {
+    // 切换洗车二维码
+    switchQRCode(index) {
+      this.currentQRCode = index;
+    },
+    
+    // 切换微信二维码
+    switchWechatQRCode(index) {
+      this.currentWechatQRCode = index;
+    },
+    
     generatePoster() {
       // 设置海报生成状态
       this.isGeneratingPoster = true;
@@ -209,7 +245,7 @@ export default {
           // 创建下载链接
           const link = document.createElement('a');
           link.href = canvas.toDataURL('image/png');
-          link.download = '喜车邦自助洗车海报.png';
+          link.download = `喜车邦自助洗车海报_洗车码${this.currentQRCode}_微信码${this.currentWechatQRCode}.png`;
           link.click();
           
           // 恢复按钮显示和状态
@@ -240,7 +276,6 @@ export default {
   align-items: center;
   max-width: 100%;
   position: relative;
-  /* 设置一个足够大的最小宽度，确保内容不会被压缩 */
   min-width: 1200px;
 }
 
@@ -419,10 +454,12 @@ export default {
 }
 
 .arrow {
-  font-size: 30px;
+  font-size: 40px; /* 增大箭头字体大小 */
   color: white;
-  margin: 0 10px;
+  margin: 0 15px; /* 增加左右间距 */
   align-self: center;
+  font-weight: bold; /* 加粗箭头 */
+  line-height: 1; /* 调整行高 */
 }
 
 /* 底部二维码样式 */
@@ -472,6 +509,8 @@ export default {
 .phone-mockup-image img {
   max-width: 100%;
   max-height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
 }
 
 /* 使用流程 */
@@ -543,22 +582,66 @@ export default {
   z-index: 1000;
 }
 
+/* 按钮组水平排列 */
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 二维码切换按钮样式 */
+.qr-code-switcher,
+.wechat-qr-code-switcher {
+  display: flex;
+  gap: 5px;
+}
+
+.qr-switch-btn,
+.wechat-qr-switch-btn {
+  background-color: #0052d9;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.qr-switch-btn:hover,
+.wechat-qr-switch-btn:hover {
+  background-color: #003a99;
+}
+
+.qr-switch-btn.active,
+.wechat-qr-switch-btn.active {
+  background-color: #F8EE03;
+  color: #0052d9;
+  font-weight: bold;
+}
+
 .generate-poster-btn {
   background-color: #0052d9;
   color: white;
   border: none;
-  padding: 12px 30px;
-  font-size: 18px;
-  border-radius: 30px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .generate-poster-btn:hover {
   background-color: #003a99;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 </style>
