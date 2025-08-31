@@ -410,6 +410,26 @@ export default {
   overflow-x: auto;
 }
 
+/* 自定义滚动条样式 */
+.flow-steps::-webkit-scrollbar {
+  height: 12px;
+}
+
+.flow-steps::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.flow-steps::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.flow-steps::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 /* 海报模式下的注册流程 */
 .flow-steps.for-poster {
   flex-wrap: wrap;
