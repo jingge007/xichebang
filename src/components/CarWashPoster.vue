@@ -125,7 +125,7 @@
           </div>
           <!-- 二维码图片 -->
           <div class="qr-code-section-bottom">
-            <img :src="wechatQRCodeImage" alt="扫码注册">
+            <img :src="wechatQRCodeImage" alt="扫码公众号关注">
           </div>
         </div>
       </div>
@@ -209,11 +209,11 @@
 import html2canvas from 'html2canvas';
 
 // 预先导入所有图片资源
-import carWashCode01 from '@/assets/images/carWashCode_01.jpg';
-import carWashCode02 from '@/assets/images/carWashCode_02.jpg';
-import carWashCode03 from '@/assets/images/carWashCode_03.jpg';
-import wechatQRCode01 from '@/assets/images/wechatQRCode_01.png';
-import wechatQRCode02 from '@/assets/images/wechatQRCode_02.png';
+import carWashCode01 from '@/assets/images/carWashCode_01.jpg';  // 洗车二维码1
+import carWashCode02 from '@/assets/images/carWashCode_02.jpg';  // 洗车二维码2
+import carWashCode03 from '@/assets/images/carWashCode_03.jpg';  // 洗车二维码3
+import wechatQRCode01 from '@/assets/images/wechatQRCode_01.png';  // 微信二维码1
+import wechatQRCode02 from '@/assets/images/wechatQRCode_02.png';  // 微信二维码2
 
 export default {
   name: "CarWashPage",
