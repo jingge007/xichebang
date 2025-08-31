@@ -121,11 +121,11 @@
         </ul>
         <div class="qrCode_box">
           <div class="carWashCode">
-            <img :src="require(`@/assets/images/carWashCode_0${currentQRCode}.jpg`)" alt="洗车码" class="qr-code-image-bottom">
+            <img :src="carWashCodeImage" alt="洗车码" class="qr-code-image-bottom">
           </div>
           <!-- 二维码图片 -->
           <div class="qr-code-section-bottom">
-            <img :src="require(`@/assets/images/wechatQRCode_0${currentWechatQRCode}.png`)" alt="扫码注册">
+            <img :src="wechatQRCodeImage" alt="扫码注册">
           </div>
         </div>
       </div>
@@ -208,6 +208,30 @@ export default {
       currentQRCode: 1, // 默认显示第一张洗车二维码
       currentWechatQRCode: 1 // 默认显示第一张微信二维码
     };
+  },
+  computed: {
+    carWashCodeImage() {
+      switch (this.currentQRCode) {
+        case 1:
+          return require('@/assets/images/carWashCode_01.jpg');
+        case 2:
+          return require('@/assets/images/carWashCode_02.jpg');
+        case 3:
+          return require('@/assets/images/carWashCode_03.jpg');
+        default:
+          return require('@/assets/images/carWashCode_01.jpg');
+      }
+    },
+    wechatQRCodeImage() {
+      switch (this.currentWechatQRCode) {
+        case 1:
+          return require('@/assets/images/wechatQRCode_01.png');
+        case 2:
+          return require('@/assets/images/wechatQRCode_02.png');
+        default:
+          return require('@/assets/images/wechatQRCode_01.png');
+      }
+    }
   },
   methods: {
     // 切换洗车二维码
