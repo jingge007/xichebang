@@ -194,6 +194,14 @@
         <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
       </div>
     </div>
+    
+    <!-- Loading遮罩层 -->
+    <div v-if="isGeneratingPoster" class="loading-overlay">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <p>海报生成中...</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -250,7 +258,9 @@ export default {
 
       // 隐藏按钮以避免出现在海报中
       const button = document.querySelector('.poster-button-container');
-      button.style.display = 'none';
+      if (button) {
+        button.style.display = 'none';
+      }
 
       // 等待DOM更新后再生成海报
       this.$nextTick(() => {
@@ -261,7 +271,11 @@ export default {
           useCORS: true, // 允许跨域图片
           backgroundColor: '#f0f2f5', // 设置背景色
           scrollX: 0,
-          scrollY: 0
+          scrollY: 0,
+          ignoreElements: (element) => {
+            // 忽略loading遮罩层，不将其包含在截图中
+            return element.classList && element.classList.contains('loading-overlay');
+          }
         }).then(canvas => {
           // 创建下载链接
           const link = document.createElement('a');
@@ -270,13 +284,17 @@ export default {
           link.click();
 
           // 恢复按钮显示和状态
-          button.style.display = 'block';
+          if (button) {
+            button.style.display = 'block';
+          }
           this.isGeneratingPoster = false;
         }).catch(error => {
           console.error('生成海报失败:', error);
           alert('生成海报失败，请重试');
           // 确保恢复按钮显示和状态
-          button.style.display = 'block';
+          if (button) {
+            button.style.display = 'block';
+          }
           this.isGeneratingPoster = false;
         });
       });
@@ -684,5 +702,40 @@ export default {
   background-color: #003a99;
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading遮罩层样式 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+  font-size: 18px;
+}
+
+.loading-spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #0052d9;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
