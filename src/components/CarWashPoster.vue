@@ -214,31 +214,27 @@ export default {
     return {
       isGeneratingPoster: false,
       currentQRCode: 1, // 默认显示第一张洗车二维码
-      currentWechatQRCode: 1 // 默认显示第一张微信二维码
+      currentWechatQRCode: 1, // 默认显示第一张微信二维码
+      // 预加载所有图片
+      carWashCodeImages: [
+        require('@/assets/images/carWashCode_01.jpg'),
+        require('@/assets/images/carWashCode_02.jpg'),
+        require('@/assets/images/carWashCode_03.jpg')
+      ],
+      wechatQRCodeImages: [
+        require('@/assets/images/wechatQRCode_01.png'),
+        require('@/assets/images/wechatQRCode_02.png')
+      ]
     };
   },
   computed: {
     carWashCodeImage() {
-      switch (this.currentQRCode) {
-        case 1:
-          return require('@/assets/images/carWashCode_01.jpg');
-        case 2:
-          return require('@/assets/images/carWashCode_02.jpg');
-        case 3:
-          return require('@/assets/images/carWashCode_03.jpg');
-        default:
-          return require('@/assets/images/carWashCode_01.jpg');
-      }
+      // 根据索引返回对应图片，索引从1开始，数组索引从0开始
+      return this.carWashCodeImages[this.currentQRCode - 1] || this.carWashCodeImages[0];
     },
     wechatQRCodeImage() {
-      switch (this.currentWechatQRCode) {
-        case 1:
-          return require('@/assets/images/wechatQRCode_01.png');
-        case 2:
-          return require('@/assets/images/wechatQRCode_02.png');
-        default:
-          return require('@/assets/images/wechatQRCode_01.png');
-      }
+      // 根据索引返回对应图片，索引从1开始，数组索引从0开始
+      return this.wechatQRCodeImages[this.currentWechatQRCode - 1] || this.wechatQRCodeImages[0];
     }
   },
   methods: {
