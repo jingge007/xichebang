@@ -208,33 +208,44 @@
 <script>
 import html2canvas from 'html2canvas';
 
+// 预先导入所有图片资源
+import carWashCode01 from '@/assets/images/carWashCode_01.jpg';
+import carWashCode02 from '@/assets/images/carWashCode_02.jpg';
+import carWashCode03 from '@/assets/images/carWashCode_03.jpg';
+import wechatQRCode01 from '@/assets/images/wechatQRCode_01.png';
+import wechatQRCode02 from '@/assets/images/wechatQRCode_02.png';
+
 export default {
   name: "CarWashPage",
   data() {
     return {
       isGeneratingPoster: false,
       currentQRCode: 1, // 默认显示第一张洗车二维码
-      currentWechatQRCode: 1, // 默认显示第一张微信二维码
-      // 预加载所有图片
-      carWashCodeImages: [
-        require('@/assets/images/carWashCode_01.jpg'),
-        require('@/assets/images/carWashCode_02.jpg'),
-        require('@/assets/images/carWashCode_03.jpg')
-      ],
-      wechatQRCodeImages: [
-        require('@/assets/images/wechatQRCode_01.png'),
-        require('@/assets/images/wechatQRCode_02.png')
-      ]
+      currentWechatQRCode: 1 // 默认显示第一张微信二维码
     };
   },
   computed: {
     carWashCodeImage() {
-      // 根据索引返回对应图片，索引从1开始，数组索引从0开始
-      return this.carWashCodeImages[this.currentQRCode - 1] || this.carWashCodeImages[0];
+      switch (this.currentQRCode) {
+        case 1:
+          return carWashCode01;
+        case 2:
+          return carWashCode02;
+        case 3:
+          return carWashCode03;
+        default:
+          return carWashCode01;
+      }
     },
     wechatQRCodeImage() {
-      // 根据索引返回对应图片，索引从1开始，数组索引从0开始
-      return this.wechatQRCodeImages[this.currentWechatQRCode - 1] || this.wechatQRCodeImages[0];
+      switch (this.currentWechatQRCode) {
+        case 1:
+          return wechatQRCode01;
+        case 2:
+          return wechatQRCode02;
+        default:
+          return wechatQRCode01;
+      }
     }
   },
   methods: {
