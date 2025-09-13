@@ -1,11 +1,13 @@
 module.exports = {
-  pwa: {
-    iconPaths: {
-      favicon32: 'favicon.ico',
-      favicon16: 'favicon.ico',
-      appleTouchIcon: 'favicon.ico',
-      maskIcon: 'favicon.ico',
-      msTileImage: 'favicon.ico'
+  css: {
+    loaderOptions: {
+      less: {
+        // 全局导入less变量和mixins
+        globalVars: {
+          primaryColor: '#0052d9',
+          secondaryColor: '#F8EE03'
+        }
+      }
     }
   }
-}
+};

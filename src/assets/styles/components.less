@@ -1,0 +1,176 @@
+@import "variables.less";
+@import "mixins.less";
+
+// 顶部横幅样式
+.header-banner {
+  background-color: @primary-color;
+  color: @white;
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  border-radius: @border-radius;
+  height: 60px;
+  min-width: 800px;
+
+  .header-service-info {
+    margin-left: auto;
+    text-align: right;
+
+    .service-hours {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: @secondary-color;
+    }
+
+    .service-types {
+      font-size: 14px;
+    }
+  }
+
+  .logo-image {
+    height: 50px;
+    width: 50px; // 设置固定宽度
+    margin-right: 15px;
+    flex-shrink: 0; // 防止在小屏幕上被压缩
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; // 保持图片比例并填充容器
+      border-radius: @border-radius-circle;
+      border: 3px solid @white;
+      position: relative;
+      top: -1px;
+    }
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    white-space: nowrap;
+    margin: 0 15px;
+  }
+}
+
+// 返回按钮样式
+.back-button {
+  .button-base();
+  background-color: @primary-color;
+  color: @white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: @border-radius-medium;
+  box-shadow: @box-shadow-button;
+
+  .button-hover(#003a99, translateY(-2px));
+}
+
+// 信息卡片通用样式
+.info-card,
+.green-bg {
+  .card-style();
+}
+
+.card-title {
+  .card-title-style();
+}
+
+// 海报生成按钮样式 - 悬浮固定在底部
+.poster-button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: auto;
+  max-width: ~"calc(100% - 40px)";
+
+  // 按钮组水平排列
+  .button-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: @border-radius-large;
+    box-shadow: @box-shadow;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    // 二维码切换按钮样式
+    .qr-code-switcher,
+    .wechat-qr-code-switcher {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .qr-switch-btn,
+      .wechat-qr-switch-btn {
+        .button-base();
+        background-color: @primary-color;
+        color: @white;
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: @border-radius-small;
+        min-width: auto;
+
+        &:hover {
+          background-color: #003a99;
+        }
+
+        &.active {
+          background-color: @secondary-color;
+          color: @primary-color;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .generate-poster-btn {
+      .button-base();
+      background-color: @primary-color;
+      color: @white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: @border-radius-medium;
+      box-shadow: @box-shadow-button;
+
+      .button-hover(#003a99, translateY(-2px));
+    }
+  }
+}
+
+// Loading遮罩层样式
+.loading-overlay {
+  .absolute-center();
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+
+  .loading-content {
+    text-align: center;
+    color: @white;
+    font-size: 18px;
+
+    .loading-spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid @primary-color;
+      border-radius: @border-radius-circle;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
