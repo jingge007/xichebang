@@ -378,6 +378,7 @@ export default {
 
   .greeting {
     font-weight: bold;
+    margin-bottom: 5px;
   }
 
   .intro-text {
