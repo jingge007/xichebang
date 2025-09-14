@@ -18,7 +18,15 @@
         <div class="flow-step">
           <div class="step-number">步骤一</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_01.png')" alt="注册步骤1">
+            <img class="stepImg" :src="require('@/assets/images/register_01.png')" alt="注册步骤1">
+            <!-- 公众号二维码展示区域 -->
+            <div class="official-account-qrcode-container">
+              <img 
+                :src="require('@/assets/images/qrCodeOfOfficialAccount.jpg')" 
+                alt="公众号二维码" 
+                class="official-account-qrcode-image"
+              >
+            </div>
           </div>
           <div class="step-description">微信扫描墙上二维码关注公众号</div>
         </div>
@@ -26,7 +34,7 @@
         <div class="flow-step">
           <div class="step-number">步骤二</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_02.png')" alt="注册步骤2">
+            <img class="stepImg" :src="require('@/assets/images/register_02.png')" alt="注册步骤2">
           </div>
           <div class="step-description">进入公众号后点击会员注册</div>
         </div>
@@ -34,7 +42,7 @@
         <div class="flow-step">
           <div class="step-number">步骤三</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_03.png')" alt="注册步骤3">
+            <img class="stepImg" :src="require('@/assets/images/register_03.png')" alt="注册步骤3">
           </div>
           <div class="step-description">输入相关信息注册会员</div>
         </div>
@@ -42,7 +50,7 @@
         <div class="flow-step">
           <div class="step-number">步骤四</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_04.png')" alt="注册步骤4">
+            <img class="stepImg" :src="require('@/assets/images/register_04.png')" alt="注册步骤4">
           </div>
           <div class="step-description">注册成功后进入个人中心点击充值</div>
         </div>
@@ -50,7 +58,7 @@
         <div class="flow-step">
           <div class="step-number">步骤五</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_05.png')" alt="注册步骤5">
+            <img class="stepImg" :src="require('@/assets/images/register_05.png')" alt="注册步骤5">
           </div>
           <div class="step-description">选择充值套餐并完成支付</div>
         </div>
@@ -58,7 +66,15 @@
         <div class="flow-step">
           <div class="step-number">步骤六</div>
           <div class="phone-mockup-image">
-            <img :src="require('@/assets/images/register_06.png')" alt="注册步骤6">
+            <img class="stepImg" :src="require('@/assets/images/register_06.png')" alt="注册步骤6">
+            <!-- 洗车码展示区域 -->
+            <div class="car-wash-code-container">
+              <img 
+                :src="currentCarWashCode" 
+                alt="洗车码" 
+                class="car-wash-code-image"
+              >
+            </div>
           </div>
           <div class="step-description">微信扫描洗车码开始洗车服务</div>
         </div>
@@ -68,6 +84,18 @@
     <div class="poster-button-container">
       <div class="button-group" v-if="!isGeneratingPoster">
         <button @click="$emit('back')" class="back-button">返回主页</button>
+        <!-- 洗车码切换按钮 -->
+        <div class="car-wash-code-selector-inline">
+          <button 
+            v-for="(code, index) in carWashCodes" 
+            :key="index"
+            @click="selectCarWashCode(index)"
+            :class="{ active: currentCodeIndex === index }"
+            class="code-btn"
+          >
+            洗车码{{ String(index + 1).padStart(2, '0') }}
+          </button>
+        </div>
         <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
       </div>
     </div>
@@ -89,10 +117,24 @@ export default {
   name: "CarWashPage",
   data() {
     return {
-      isGeneratingPoster: false
+      isGeneratingPoster: false,
+      currentCodeIndex: 0,
+      carWashCodes: [
+        require('@/assets/images/carWashCode_01.jpg'),
+        require('@/assets/images/carWashCode_02.jpg'),
+        require('@/assets/images/carWashCode_03.jpg')
+      ]
     };
   },
+  computed: {
+    currentCarWashCode() {
+      return this.carWashCodes[this.currentCodeIndex];
+    }
+  },
   methods: {
+    selectCarWashCode(index) {
+      this.currentCodeIndex = index;
+    },
     generatePoster() {
       // 设置海报生成状态
       this.isGeneratingPoster = true;
@@ -119,10 +161,11 @@ export default {
             return element.classList && element.classList.contains('loading-overlay');
           }
         }).then(canvas => {
-          // 创建下载链接
+          // 根据当前选中的洗车码生成文件名
+          const codeNumber = String(this.currentCodeIndex + 1).padStart(2, '0');
           const link = document.createElement('a');
           link.href = canvas.toDataURL('image/png');
-          link.download = `喜车邦新会员注册流程海报.png`;
+          link.download = `喜车邦新会员手机注册流程海报_洗车码${codeNumber}.png`;
           link.click();
 
           // 恢复按钮显示和状态
@@ -240,6 +283,123 @@ export default {
   }
 }
 
+/* 添加公众号二维码相关样式 */
+.official-account-qrcode-container {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .official-account-qrcode-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.phone-mockup-image {
+  position: relative;
+  width: 240px;
+  height: 517px;
+  margin-bottom: 10px;
+  .flex-center();
+
+  .stepImg {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: @border-radius-large;
+    overflow: hidden;
+  }
+}
+
+/* 添加洗车码相关样式 */
+.car-wash-code-container {
+  position: absolute;
+  top: 59%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .car-wash-code-image {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.car-wash-code-selector-inline {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  
+  .code-btn {
+    padding: 6px 12px;
+    border: 2px solid @primary-color;
+    background-color: white;
+    border-radius: 20px;
+    color: @primary-color;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    
+    &:hover {
+      background-color: @primary-color;
+      color: white;
+    }
+    
+    &.active {
+      background-color: @primary-color;
+      color: white;
+    }
+  }
+}
+
+.car-wash-code-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+  
+  .code-btn {
+    padding: 6px 12px;
+    border: 2px solid @primary-color;
+    background-color: white;
+    border-radius: 20px;
+    color: @primary-color;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: @primary-color;
+      color: white;
+    }
+    
+    &.active {
+      background-color: @primary-color;
+      color: white;
+    }
+  }
+}
+
+/* 海报模式下隐藏洗车码切换按钮 */
+.generating-poster .car-wash-code-selector {
+  display: none;
+}
+
 .arrow {
   font-size: 40px;
   color: white;
@@ -261,20 +421,5 @@ export default {
   justify-content: center;
   padding: 0 10px;
   font-weight: bold;
-}
-
-/* 图片注册流程 */
-.phone-mockup-image {
-  width: 240px;
-  height: 517px;
-  margin-bottom: 10px;
-  .flex-center();
-
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: @border-radius-large;
-    overflow: hidden;
-  }
 }
 </style>
