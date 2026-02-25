@@ -20,7 +20,7 @@
       
       <div class="faq-item">
         <div class="faq-question">是否可以退款或逆向兑换余额或赠送金？</div>
-        <div class="faq-answer">我们不提供任何退款或逆向兑换服务，充值的余额和赠送金只能用于洗车消费。</div>
+        <div class="faq-answer">我们不提供任何退款或逆向兑换服务，充值的余额和赠送金只能用于本店洗车消费不支持退款或逆向兑换。</div>
       </div>
       
       <div class="faq-item">
