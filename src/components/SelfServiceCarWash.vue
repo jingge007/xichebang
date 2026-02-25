@@ -117,28 +117,18 @@
     <div class="poster-button-container">
       <div class="button-group" v-if="!isGeneratingPoster">
         <div class="qr-code-switcher">
-          <button
-            v-for="i in 3"
-            :key="'car-' + i"
-            @click="switchQRCode(i)"
-            :class="{ active: currentQRCode === i }"
-            class="qr-switch-btn"
-          >
+          <button v-for="i in 3" :key="'car-' + i" @click="switchQRCode(i)" :class="{ active: currentQRCode === i }"
+            class="qr-switch-btn">
             洗车二维码{{ i }}
           </button>
         </div>
         <div class="wechat-qr-code-switcher">
-          <button
-            v-for="i in 2"
-            :key="'wechat-' + i"
-            @click="switchWechatQRCode(i)"
-            :class="{ active: currentWechatQRCode === i }"
-            class="wechat-qr-switch-btn"
-          >
+          <button v-for="i in 2" :key="'wechat-' + i" @click="switchWechatQRCode(i)"
+            :class="{ active: currentWechatQRCode === i }" class="wechat-qr-switch-btn">
             微信二维码{{ i }}
           </button>
         </div>
-        <button @click="$emit('back')" class="back-button">返回主页</button>
+        <button @click="$router.push('/')" class="back-button">返回主页</button>
         <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
       </div>
     </div>
@@ -285,7 +275,8 @@ export default {
   }
 }
 
-.section, .section-row {
+.section,
+.section-row {
   width: 100%;
   max-width: 100%;
 }
@@ -295,7 +286,7 @@ export default {
   gap: 20px;
 }
 
-.section-row > * {
+.section-row>* {
   flex: 1;
 }
 

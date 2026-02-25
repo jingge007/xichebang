@@ -21,11 +21,8 @@
             <img class="stepImg" :src="require('@/assets/images/register_01.png')" alt="注册步骤1">
             <!-- 公众号二维码展示区域 -->
             <div class="official-account-qrcode-container">
-              <img 
-                :src="require('@/assets/images/qrCodeOfOfficialAccount.jpg')" 
-                alt="公众号二维码" 
-                class="official-account-qrcode-image"
-              >
+              <img :src="require('@/assets/images/qrCodeOfOfficialAccount.jpg')" alt="公众号二维码"
+                class="official-account-qrcode-image">
             </div>
           </div>
           <div class="step-description">微信扫描墙上二维码关注公众号</div>
@@ -69,11 +66,7 @@
             <img class="stepImg" :src="require('@/assets/images/register_06.png')" alt="注册步骤6">
             <!-- 洗车码展示区域 -->
             <div class="car-wash-code-container">
-              <img 
-                :src="currentCarWashCode" 
-                alt="洗车码" 
-                class="car-wash-code-image"
-              >
+              <img :src="currentCarWashCode" alt="洗车码" class="car-wash-code-image">
             </div>
           </div>
           <div class="step-description">微信扫描洗车码开始洗车服务</div>
@@ -83,23 +76,18 @@
     <!--4.海报生成按钮 -->
     <div class="poster-button-container">
       <div class="button-group" v-if="!isGeneratingPoster">
-        <button @click="$emit('back')" class="back-button">返回主页</button>
+        <button @click="$router.push('/')" class="back-button">返回主页</button>
         <!-- 洗车码切换按钮 -->
         <div class="car-wash-code-selector-inline">
-          <button 
-            v-for="(code, index) in carWashCodes" 
-            :key="index"
-            @click="selectCarWashCode(index)"
-            :class="{ active: currentCodeIndex === index }"
-            class="code-btn"
-          >
+          <button v-for="(code, index) in carWashCodes" :key="index" @click="selectCarWashCode(index)"
+            :class="{ active: currentCodeIndex === index }" class="code-btn">
             洗车码{{ String(index + 1).padStart(2, '0') }}
           </button>
         </div>
         <button @click="generatePoster" class="generate-poster-btn">生成海报</button>
       </div>
     </div>
-    
+
     <!-- Loading遮罩层 -->
     <div v-if="isGeneratingPoster" class="loading-overlay">
       <div class="loading-content">
@@ -141,7 +129,7 @@ export default {
 
       // 隐藏按钮以避免出现在海报中
       const posterButton = document.querySelector('.poster-button-container');
-      
+
       if (posterButton) {
         posterButton.style.display = 'none';
       }
@@ -172,7 +160,7 @@ export default {
           if (posterButton) {
             posterButton.style.display = 'block';
           }
-          
+
           this.isGeneratingPoster = false;
         }).catch(error => {
           console.error('生成海报失败:', error);
@@ -181,7 +169,7 @@ export default {
           if (posterButton) {
             posterButton.style.display = 'block';
           }
-          
+
           this.isGeneratingPoster = false;
         });
       });
@@ -207,7 +195,7 @@ export default {
   box-sizing: border-box;
   min-height: calc(100vh - 40px); // 减去上下padding避免滚动条
   overflow: hidden; // 隐藏溢出内容
-  
+
   // 海报生成模式下移除底部padding
   &.generating-poster {
     padding: 20px;
@@ -215,7 +203,8 @@ export default {
   }
 }
 
-.section, .section-row {
+.section,
+.section-row {
   width: 100%;
   max-width: 100%;
 }
@@ -225,7 +214,7 @@ export default {
   gap: 20px;
 }
 
-.section-row > * {
+.section-row>* {
   flex: 1;
 }
 
@@ -295,7 +284,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   .official-account-qrcode-image {
     max-width: 100%;
     max-height: 100%;
@@ -329,7 +318,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   .car-wash-code-image {
     max-width: 100%;
     max-height: 100%;
@@ -342,7 +331,7 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  
+
   .code-btn {
     padding: 6px 12px;
     border: 2px solid @primary-color;
@@ -353,12 +342,12 @@ export default {
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
-    
+
     &:hover {
       background-color: @primary-color;
       color: white;
     }
-    
+
     &.active {
       background-color: @primary-color;
       color: white;
@@ -372,7 +361,7 @@ export default {
   gap: 10px;
   margin: 15px 0;
   flex-wrap: wrap;
-  
+
   .code-btn {
     padding: 6px 12px;
     border: 2px solid @primary-color;
@@ -382,12 +371,12 @@ export default {
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background-color: @primary-color;
       color: white;
     }
-    
+
     &.active {
       background-color: @primary-color;
       color: white;
